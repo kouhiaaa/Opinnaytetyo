@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 import yaml
 
-PROMPTS_DIR = Path("prompts")
+PROMPTS_DIR = Path(__file__).parent.parent / "prompts"
 
 
 @dataclass

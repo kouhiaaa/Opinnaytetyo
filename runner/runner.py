@@ -17,6 +17,8 @@ def run_benchmark(
     prompts_dir: Path = None,
     on_progress: Callable[[int, int, str], None] = None,
 ) -> int:
+    if n_repeats < 1:
+        raise ValueError("n_repeats must be at least 1")
     prompts = load_prompts(categories=categories, prompts_dir=prompts_dir or PROMPTS_DIR)
     run_id = insert_run(conn, n_repeats, models, categories)
     total = len(models) * len(prompts) * n_repeats
@@ -37,7 +39,6 @@ def run_benchmark(
                     conn, run_id, model, prompt.id, prompt.category,
                     repeat, result.output, result.ttft_ms, result.total_ms, result.token_count,
                 )
-                insert_metric(conn, resp_id, "ttft_ms", result.ttft_ms)
                 insert_metric(conn, resp_id, "tokens_per_second", tokens_per_second(result.token_count, result.total_ms))
                 repeat_outputs.append(result.output)
                 repeat_ids.append(resp_id)
