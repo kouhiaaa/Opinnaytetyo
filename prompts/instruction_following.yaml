@@ -1,0 +1,18 @@
+prompts:
+  - id: if_uppercase_list
+    category: instruction_following
+    prompt: "List exactly 3 programming languages. Format your response as a numbered list. Use ALL CAPS for each language name. Output nothing else."
+    reference: "1. PYTHON\n2. JAVASCRIPT\n3. RUST"
+    tags: [format, list]
+
+  - id: if_json_output
+    category: instruction_following
+    prompt: "Output a JSON object with exactly these fields: name, color, age. Use these values: name=Whiskers, color=orange, age=3. Output only the JSON, no explanation."
+    reference: '{"name": "Whiskers", "color": "orange", "age": 3}'
+    tags: [format, json]
+
+  - id: if_haiku
+    category: instruction_following
+    prompt: "Write a haiku about coding. A haiku has exactly 3 lines with 5, 7, and 5 syllables respectively. Output only the haiku text, no title."
+    reference: "Keys click in the dark\nLogic flows through tangled paths\nBug fixed at midnight"
+    tags: [format, creative]

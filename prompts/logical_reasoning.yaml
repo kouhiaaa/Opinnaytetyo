@@ -1,0 +1,24 @@
+prompts:
+  - id: lr_ages
+    category: logical_reasoning
+    prompt: "Alice is twice as old as Bob. In 5 years, Alice will be 1.5 times as old as Bob. How old is Alice now? Answer with just the number."
+    reference: "10"
+    tags: [math, algebra]
+
+  - id: lr_birds
+    category: logical_reasoning
+    prompt: "All birds can fly. Penguins are birds. Can penguins fly? Answer with Yes or No and one sentence explaining why."
+    reference: "No. The premise 'all birds can fly' is false — penguins are birds but cannot fly."
+    tags: [logic, syllogism]
+
+  - id: lr_siblings
+    category: logical_reasoning
+    prompt: "A woman has 7 daughters. Each daughter has one brother. How many children does the woman have? Answer with just the number."
+    reference: "8"
+    tags: [logic, puzzle]
+
+  - id: lr_sequence
+    category: logical_reasoning
+    prompt: "What comes next in this sequence: 2, 6, 12, 20, 30, ___? Answer with just the number."
+    reference: "42"
+    tags: [math, patterns]

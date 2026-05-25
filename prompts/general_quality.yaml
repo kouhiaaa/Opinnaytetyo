@@ -1,0 +1,18 @@
+prompts:
+  - id: gq_explain_recursion
+    category: general_quality
+    prompt: "Explain recursion to a 10-year-old in 2-3 sentences."
+    reference: "Recursion is when a function calls itself to solve a smaller version of the same problem. Imagine looking up a word in a dictionary and finding its definition uses another word you need to look up — you keep going until you find a word you already know."
+    tags: [explanation, beginner]
+
+  - id: gq_best_language
+    category: general_quality
+    prompt: "What is the best programming language for beginners and why? Answer in 2-3 sentences."
+    reference: "Python is widely considered the best language for beginners because its syntax is clean and readable, resembling plain English. It has a large community, extensive learning resources, and is used across web development, data science, and automation."
+    tags: [opinion, explanation]
+
+  - id: gq_summarize
+    category: general_quality
+    prompt: "Summarize the following in one sentence: 'Machine learning is a subset of artificial intelligence where systems learn from data to improve their performance on tasks without being explicitly programmed for each task.'"
+    reference: "Machine learning is an AI approach where systems automatically improve at tasks by learning from data rather than following explicit instructions."
+    tags: [summarization]

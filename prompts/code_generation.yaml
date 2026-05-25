@@ -1,0 +1,18 @@
+prompts:
+  - id: cg_fibonacci
+    category: code_generation
+    prompt: "Write a Python function fibonacci(n) that returns the nth Fibonacci number using dynamic programming. Include the function definition only, no explanation."
+    reference: "def fibonacci(n):\n    if n <= 1:\n        return n\n    a, b = 0, 1\n    for _ in range(2, n + 1):\n        a, b = b, a + b\n    return b"
+    tags: [python, algorithms, dp]
+
+  - id: cg_palindrome
+    category: code_generation
+    prompt: "Write a Python function is_palindrome(s) that returns True if s is a palindrome ignoring spaces and case. Include the function definition only."
+    reference: "def is_palindrome(s):\n    s = s.replace(' ', '').lower()\n    return s == s[::-1]"
+    tags: [python, strings]
+
+  - id: cg_flatten
+    category: code_generation
+    prompt: "Write a Python function flatten(lst) that flattens a nested list of arbitrary depth into a single flat list. Include the function definition only."
+    reference: "def flatten(lst):\n    result = []\n    for item in lst:\n        if isinstance(item, list):\n            result.extend(flatten(item))\n        else:\n            result.append(item)\n    return result"
+    tags: [python, recursion]
