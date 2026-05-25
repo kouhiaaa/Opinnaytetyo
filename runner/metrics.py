@@ -1,6 +1,3 @@
-from bert_score import score as _bert_score
-
-
 def tokens_per_second(token_count: int, total_ms: float) -> float:
     if total_ms == 0:
         return 0.0
@@ -8,6 +5,7 @@ def tokens_per_second(token_count: int, total_ms: float) -> float:
 
 
 def compute_bert_score(outputs: list, references: list) -> list:
+    from bert_score import score as _bert_score
     P, R, F1 = _bert_score(outputs, references, lang="en", verbose=False)
     return [
         {"bert_precision": float(p), "bert_recall": float(r), "bert_f1": float(f)}
@@ -18,5 +16,6 @@ def compute_bert_score(outputs: list, references: list) -> list:
 def compute_determinism(outputs: list) -> float:
     if len(outputs) < 2:
         return 1.0
+    from bert_score import score as _bert_score
     _, _, F1 = _bert_score(outputs[:-1], outputs[1:], lang="en", verbose=False)
     return float(F1.mean())
