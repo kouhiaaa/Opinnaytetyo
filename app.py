@@ -21,14 +21,25 @@ st.markdown("""
     padding: 4px 0;
 }
 
-/* Hide default Streamlit header */
-#MainMenu, footer, header {visibility: hidden;}
+/* Hide only the menu and footer, keep the sidebar toggle */
+#MainMenu, footer {visibility: hidden;}
+[data-testid="stToolbar"] {visibility: hidden;}
 
-/* Main content padding */
+/* Background dot grid */
+.stApp {
+    background-color: #F1F5F9;
+    background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
+    background-size: 22px 22px;
+}
+
+/* Main content card */
 .block-container {
     padding-top: 2rem;
     padding-bottom: 2rem;
     max-width: 1200px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(8px);
+    border-radius: 16px;
 }
 
 /* Page headers */
