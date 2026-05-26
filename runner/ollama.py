@@ -20,13 +20,14 @@ def generate(
     model: str,
     prompt: str,
     on_token: Callable[[str], None] = None,
+    temperature: float = 0.7,
 ) -> GenerationResult:
     url = f"{OLLAMA_BASE}/api/generate"
     t_start = time.perf_counter()
     ttft_ms = None
     tokens = []
 
-    payload = {"model": model, "prompt": prompt, "stream": True, "options": {"temperature": 0}}
+    payload = {"model": model, "prompt": prompt, "stream": True, "options": {"temperature": temperature}}
     with requests.post(url, json=payload, stream=True) as resp:
         resp.raise_for_status()
         for line in resp.iter_lines():

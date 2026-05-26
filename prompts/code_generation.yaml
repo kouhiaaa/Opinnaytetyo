@@ -16,3 +16,45 @@ prompts:
     prompt: "Write a Python function flatten(lst) that flattens a nested list of arbitrary depth into a single flat list. Include the function definition only."
     reference: "def flatten(lst):\n    result = []\n    for item in lst:\n        if isinstance(item, list):\n            result.extend(flatten(item))\n        else:\n            result.append(item)\n    return result"
     tags: [python, recursion]
+
+  - id: cg_binary_search
+    category: code_generation
+    prompt: "Write a Python function binary_search(arr, target) that returns the index of target in the sorted list arr, or -1 if not found. Include the function definition only."
+    reference: "def binary_search(arr, target):\n    left, right = 0, len(arr) - 1\n    while left <= right:\n        mid = (left + right) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            left = mid + 1\n        else:\n            right = mid - 1\n    return -1"
+    tags: [python, algorithms, search]
+
+  - id: cg_fizzbuzz
+    category: code_generation
+    prompt: "Write a Python function fizzbuzz(n) that returns a list of strings from 1 to n where multiples of 3 are 'Fizz', multiples of 5 are 'Buzz', and multiples of both are 'FizzBuzz'. Include the function definition only."
+    reference: "def fizzbuzz(n):\n    result = []\n    for i in range(1, n + 1):\n        if i % 15 == 0:\n            result.append('FizzBuzz')\n        elif i % 3 == 0:\n            result.append('Fizz')\n        elif i % 5 == 0:\n            result.append('Buzz')\n        else:\n            result.append(str(i))\n    return result"
+    tags: [python, conditionals]
+
+  - id: cg_is_prime
+    category: code_generation
+    prompt: "Write a Python function is_prime(n) that returns True if n is a prime number, False otherwise. Include the function definition only."
+    reference: "def is_prime(n):\n    if n < 2:\n        return False\n    for i in range(2, int(n**0.5) + 1):\n        if n % i == 0:\n            return False\n    return True"
+    tags: [python, math]
+
+  - id: cg_reverse_words
+    category: code_generation
+    prompt: "Write a Python function reverse_words(s) that returns the string s with the word order reversed. Include the function definition only."
+    reference: "def reverse_words(s):\n    return ' '.join(s.split()[::-1])"
+    tags: [python, strings]
+
+  - id: cg_count_vowels
+    category: code_generation
+    prompt: "Write a Python function count_vowels(s) that returns the number of vowels (a, e, i, o, u) in string s, case-insensitive. Include the function definition only."
+    reference: "def count_vowels(s):\n    return sum(1 for c in s.lower() if c in 'aeiou')"
+    tags: [python, strings]
+
+  - id: cg_merge_sorted
+    category: code_generation
+    prompt: "Write a Python function merge_sorted(a, b) that merges two sorted lists into one sorted list without using built-in sort. Include the function definition only."
+    reference: "def merge_sorted(a, b):\n    result = []\n    i = j = 0\n    while i < len(a) and j < len(b):\n        if a[i] <= b[j]:\n            result.append(a[i])\n            i += 1\n        else:\n            result.append(b[j])\n            j += 1\n    result.extend(a[i:])\n    result.extend(b[j:])\n    return result"
+    tags: [python, algorithms, sorting]
+
+  - id: cg_two_sum
+    category: code_generation
+    prompt: "Write a Python function two_sum(nums, target) that returns the indices of the two numbers in list nums that add up to target. Assume exactly one solution exists. Include the function definition only."
+    reference: "def two_sum(nums, target):\n    seen = {}\n    for i, num in enumerate(nums):\n        complement = target - num\n        if complement in seen:\n            return [seen[complement], i]\n        seen[num] = i\n    return []"
+    tags: [python, algorithms, hash-map]

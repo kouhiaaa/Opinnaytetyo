@@ -16,3 +16,45 @@ prompts:
     prompt: "Summarize the following in one sentence: 'Machine learning is a subset of artificial intelligence where systems learn from data to improve their performance on tasks without being explicitly programmed for each task.'"
     reference: "Machine learning is an AI approach where systems automatically improve at tasks by learning from data rather than following explicit instructions."
     tags: [summarization]
+
+  - id: gq_explain_api
+    category: general_quality
+    prompt: "Explain what an API is in 2-3 sentences for someone with no technical background."
+    reference: "An API is a way for different software programs to communicate with each other. Think of it like a waiter in a restaurant: you tell the waiter what you want, the waiter goes to the kitchen, and brings back what you ordered — you never need to enter the kitchen yourself."
+    tags: [explanation, beginner]
+
+  - id: gq_stack_vs_queue
+    category: general_quality
+    prompt: "In 2-3 sentences, explain the difference between a stack and a queue in computer science."
+    reference: "A stack follows Last-In-First-Out order, like a stack of plates where you always take from the top. A queue follows First-In-First-Out order, like a line of people where the first person to arrive is the first to leave."
+    tags: [explanation, data-structures]
+
+  - id: gq_version_control
+    category: general_quality
+    prompt: "Explain what version control is and why developers use it, in 2-3 sentences."
+    reference: "Version control is a system that tracks changes to code over time, letting developers see the history of modifications, revert to previous versions, and collaborate without overwriting each other's work. Git is the most widely used version control system and is considered essential for professional software development."
+    tags: [explanation, tools]
+
+  - id: gq_big_o
+    category: general_quality
+    prompt: "Explain Big O notation to a beginner programmer in 2-3 sentences."
+    reference: "Big O notation describes how the time or memory an algorithm needs grows as the input size increases. For example, O(n) means the time grows linearly with input size, while O(n²) means if you double the input, it takes four times as long."
+    tags: [explanation, algorithms]
+
+  - id: gq_sql_vs_nosql
+    category: general_quality
+    prompt: "What is the main difference between SQL and NoSQL databases? Answer in 2-3 sentences."
+    reference: "SQL databases store data in structured tables with fixed schemas and are best for data with clear relationships. NoSQL databases use flexible formats like documents or key-value pairs, making them better suited for applications where the data structure varies or needs to scale to very large volumes."
+    tags: [explanation, databases]
+
+  - id: gq_what_is_docker
+    category: general_quality
+    prompt: "Explain what Docker is and why it is useful in 2-3 sentences."
+    reference: "Docker is a tool that packages an application along with all its dependencies into a container, ensuring it runs the same way on any machine. This solves the common problem of code that works on a developer's machine but fails in production due to environment differences."
+    tags: [explanation, devops]
+
+  - id: gq_explain_oop
+    category: general_quality
+    prompt: "Explain object-oriented programming in 2-3 sentences."
+    reference: "Object-oriented programming organizes code around objects, which bundle together data and the functions that operate on that data. This approach makes complex programs easier to manage by modeling real-world concepts, and features like inheritance allow you to reuse and extend existing code."
+    tags: [explanation, programming-paradigms]

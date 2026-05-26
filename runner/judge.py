@@ -27,7 +27,7 @@ def cross_judge(task: str, outputs: dict) -> dict:
         for target in outputs:
             if judge == target:
                 continue
-            result = generate(judge, JUDGE_PROMPT.format(task=task, response=outputs[target]))
+            result = generate(judge, JUDGE_PROMPT.format(task=task, response=outputs[target]), temperature=0)
             score = extract_score(result.output)
             if score is not None:
                 results[target].append((judge, score))

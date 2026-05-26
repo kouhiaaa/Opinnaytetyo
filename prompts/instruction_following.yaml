@@ -8,7 +8,7 @@ prompts:
   - id: if_json_output
     category: instruction_following
     prompt: "Output a JSON object with exactly these fields: name, color, age. Use these values: name=Whiskers, color=orange, age=3. Output only the JSON, no explanation."
-    reference: '{"name": "Whiskers", "color": "orange", "age": 3}'
+    reference: "{\"name\": \"Whiskers\", \"color\": \"orange\", \"age\": 3}"
     tags: [format, json]
 
   - id: if_haiku
@@ -16,3 +16,45 @@ prompts:
     prompt: "Write a haiku about coding. A haiku has exactly 3 lines with 5, 7, and 5 syllables respectively. Output only the haiku text, no title."
     reference: "Keys click in the dark\nLogic flows through tangled paths\nBug fixed at midnight"
     tags: [format, creative]
+
+  - id: if_csv_row
+    category: instruction_following
+    prompt: "Output a single CSV row with exactly these values in this order: id=42, name=Alice, score=95.5. Use comma separation with no spaces after commas, no header, no quotes. Output only the CSV row."
+    reference: "42,Alice,95.5"
+    tags: [format, csv]
+
+  - id: if_reverse_sentence
+    category: instruction_following
+    prompt: "Reverse the word order of this sentence and output only the result: 'The quick brown fox jumps over the lazy dog'"
+    reference: "dog lazy the over jumps fox brown quick The"
+    tags: [format, manipulation]
+
+  - id: if_fixed_list
+    category: instruction_following
+    prompt: "Format the following items as a numbered list with a period after each number. Output nothing else.\ncat\ndog\nfish"
+    reference: "1. cat\n2. dog\n3. fish"
+    tags: [format, list]
+
+  - id: if_acronym
+    category: instruction_following
+    prompt: "Convert 'Artificial Intelligence' to an acronym. Output only the acronym in uppercase, nothing else."
+    reference: "AI"
+    tags: [format, text]
+
+  - id: if_repeat
+    category: instruction_following
+    prompt: "Repeat the word 'hello' exactly 4 times separated by single spaces. Output nothing else."
+    reference: "hello hello hello hello"
+    tags: [format, repetition]
+
+  - id: if_sort_numbers
+    category: instruction_following
+    prompt: "Sort these numbers in ascending order and output them as a comma-separated list with a space after each comma: 7, 2, 9, 1, 5. Output only the sorted numbers, nothing else."
+    reference: "1, 2, 5, 7, 9"
+    tags: [format, sorting]
+
+  - id: if_word_count
+    category: instruction_following
+    prompt: "Write exactly one sentence about the ocean. The sentence must contain exactly 8 words. Output only the sentence."
+    reference: "The ocean covers more than seventy percent of Earth."
+    tags: [format, word-count]

@@ -16,3 +16,45 @@ prompts:
     prompt: "Find and fix the bug in this Python function:\n\ndef count_down(n):\n    while n > 0:\n        print(n)\n    n -= 1\n\nReturn only the corrected function definition."
     reference: "def count_down(n):\n    while n > 0:\n        print(n)\n        n -= 1"
     tags: [python, bugs, infinite-loop]
+
+  - id: cd_early_return
+    category: code_debugging
+    prompt: "Find and fix the bug in this Python function:\n\ndef find_max(lst):\n    max_val = lst[0]\n    for num in lst:\n        if num > max_val:\n            max_val = num\n        return max_val\n\nReturn only the corrected function definition."
+    reference: "def find_max(lst):\n    max_val = lst[0]\n    for num in lst:\n        if num > max_val:\n            max_val = num\n    return max_val"
+    tags: [python, bugs, indentation]
+
+  - id: cd_wrong_condition
+    category: code_debugging
+    prompt: "Find and fix the bug in this Python function:\n\ndef clamp(value, lo, hi):\n    if value < lo:\n        return hi\n    if value > hi:\n        return lo\n    return value\n\nReturn only the corrected function definition."
+    reference: "def clamp(value, lo, hi):\n    if value < lo:\n        return lo\n    if value > hi:\n        return hi\n    return value"
+    tags: [python, bugs, logic]
+
+  - id: cd_missing_base_case
+    category: code_debugging
+    prompt: "Find and fix the bug in this Python function:\n\ndef sum_digits(n):\n    return n % 10 + sum_digits(n // 10)\n\nReturn only the corrected function definition."
+    reference: "def sum_digits(n):\n    if n < 10:\n        return n\n    return n % 10 + sum_digits(n // 10)"
+    tags: [python, bugs, recursion]
+
+  - id: cd_wrong_operator
+    category: code_debugging
+    prompt: "Find and fix the bug in this Python function:\n\ndef is_lowercase(c):\n    return c >= 'a' or c <= 'z'\n\nReturn only the corrected function definition."
+    reference: "def is_lowercase(c):\n    return c >= 'a' and c <= 'z'"
+    tags: [python, bugs, operator]
+
+  - id: cd_reinit_in_loop
+    category: code_debugging
+    prompt: "Find and fix the bug in this Python function:\n\ndef count_positives(lst):\n    for num in lst:\n        count = 0\n        if num > 0:\n            count += 1\n    return count\n\nReturn only the corrected function definition."
+    reference: "def count_positives(lst):\n    count = 0\n    for num in lst:\n        if num > 0:\n            count += 1\n    return count"
+    tags: [python, bugs, scope]
+
+  - id: cd_wrong_order
+    category: code_debugging
+    prompt: "Find and fix the bug in this Python function:\n\ndef grade(score):\n    if score >= 60:\n        return 'D'\n    if score >= 70:\n        return 'C'\n    if score >= 80:\n        return 'B'\n    if score >= 90:\n        return 'A'\n    return 'F'\n\nReturn only the corrected function definition."
+    reference: "def grade(score):\n    if score >= 90:\n        return 'A'\n    if score >= 80:\n        return 'B'\n    if score >= 70:\n        return 'C'\n    if score >= 60:\n        return 'D'\n    return 'F'"
+    tags: [python, bugs, conditionals]
+
+  - id: cd_wrong_slice
+    category: code_debugging
+    prompt: "Find and fix the bug in this Python function that should return all elements except the first and last:\n\ndef middle_elements(lst):\n    return lst[0:-1]\n\nReturn only the corrected function definition."
+    reference: "def middle_elements(lst):\n    return lst[1:-1]"
+    tags: [python, bugs, slicing]

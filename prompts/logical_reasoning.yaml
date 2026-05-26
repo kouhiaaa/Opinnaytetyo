@@ -22,3 +22,39 @@ prompts:
     prompt: "What comes next in this sequence: 2, 6, 12, 20, 30, ___? Answer with just the number."
     reference: "42"
     tags: [math, patterns]
+
+  - id: lr_handshakes
+    category: logical_reasoning
+    prompt: "There are 5 people in a room and each person shakes hands with every other person exactly once. How many handshakes occur in total? Answer with just the number."
+    reference: "10"
+    tags: [math, combinatorics]
+
+  - id: lr_speed
+    category: logical_reasoning
+    prompt: "A train travels at 60 km/h. How many minutes does it take to travel 90 km? Answer with just the number."
+    reference: "90"
+    tags: [math, rates]
+
+  - id: lr_probability
+    category: logical_reasoning
+    prompt: "A bag contains 3 red balls and 2 blue balls. You pick one ball at random. What is the probability it is red? Answer as a fraction."
+    reference: "3/5"
+    tags: [math, probability]
+
+  - id: lr_monks
+    category: logical_reasoning
+    prompt: "In a monastery there are 12 monks. Twice as many wear brown robes as white robes. How many monks wear white robes? Answer with just the number."
+    reference: "4"
+    tags: [math, algebra]
+
+  - id: lr_workers
+    category: logical_reasoning
+    prompt: "If 3 workers can build a wall in 6 days, how many days would it take 9 workers to build the same wall? Answer with just the number."
+    reference: "2"
+    tags: [math, rates]
+
+  - id: lr_negation
+    category: logical_reasoning
+    prompt: "It is not true that all swans are white. Rex is a swan and Rex is white. Does Rex's existence contradict the original statement? Answer Yes or No and explain in one sentence."
+    reference: "No. The statement means at least one swan is not white, which is perfectly consistent with Rex being white."
+    tags: [logic, negation]
