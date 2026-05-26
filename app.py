@@ -9,11 +9,11 @@ page = st.sidebar.radio(
 )
 
 if page == "Run Benchmarks":
-    from pages.run import show
+    from views.run import show
     show()
 elif page == "Dashboard":
-    from pages.dashboard import show
+    from views.dashboard import show
     show()
 elif page == "Prompt Editor":
-    from pages.prompts import show
+    from views.prompts import show
     show()

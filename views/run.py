@@ -3,14 +3,19 @@ import streamlit as st
 from db.schema import init_db
 from runner.runner import run_benchmark
 
-MODELS = ["llama3", "qwen:7b", "mistral"]
+MODEL_DISPLAY = {
+    "llama3:8b-instruct-q4_K_M": "Llama 3 8B",
+    "qwen2.5:7b-instruct-q4_K_M": "Qwen 2.5 7B",
+    "mistral:7b-instruct-q4_K_M": "Mistral 7B",
+}
+MODELS = list(MODEL_DISPLAY.keys())
 CATEGORIES = ["code_generation", "code_debugging", "logical_reasoning", "instruction_following", "general_quality"]
 
 
 def show():
     st.header("Run Benchmarks")
 
-    selected_models = st.multiselect("Models", MODELS, default=MODELS)
+    selected_models = st.multiselect("Models", MODELS, default=MODELS, format_func=lambda x: MODEL_DISPLAY.get(x, x))
     selected_categories = st.multiselect("Categories", CATEGORIES, default=CATEGORIES)
     n_repeats = st.slider("Repeats per prompt (for determinism)", min_value=1, max_value=10, value=3)
 

@@ -34,7 +34,13 @@ def run_benchmark(
                 if on_progress:
                     on_progress(step, total, f"{model} · {prompt.id} · {repeat + 1}/{n_repeats}")
 
-                result = generate(model, prompt.prompt)
+                try:
+                    result = generate(model, prompt.prompt)
+                except Exception as e:
+                    if on_progress:
+                        on_progress(step, total, f"FAILED {model} · {prompt.id}: {type(e).__name__}")
+                    continue
+
                 resp_id = insert_response(
                     conn, run_id, model, prompt.id, prompt.category,
                     repeat, result.output, result.ttft_ms, result.total_ms, result.token_count,
@@ -44,7 +50,10 @@ def run_benchmark(
                 repeat_ids.append(resp_id)
                 outputs_store[(model, prompt.id, repeat)] = (result.output, resp_id)
 
-            bert_results = compute_bert_score(repeat_outputs, [prompt.reference] * n_repeats)
+            if not repeat_outputs:
+                continue
+
+            bert_results = compute_bert_score(repeat_outputs, [prompt.reference] * len(repeat_outputs))
             for i, bs in enumerate(bert_results):
                 for metric, value in bs.items():
                     insert_metric(conn, repeat_ids[i], metric, value)
@@ -52,7 +61,13 @@ def run_benchmark(
             insert_metric(conn, repeat_ids[0], "determinism", compute_determinism(repeat_outputs))
 
     for prompt in prompts:
-        best_outputs = {model: outputs_store[(model, prompt.id, 0)][0] for model in models}
+        best_outputs = {
+            model: outputs_store[(model, prompt.id, 0)][0]
+            for model in models
+            if (model, prompt.id, 0) in outputs_store
+        }
+        if len(best_outputs) < 2:
+            continue
         for target_model, judgments in cross_judge(prompt.prompt, best_outputs).items():
             for judge_model, score in judgments:
                 insert_judge_score(conn, run_id, judge_model, target_model, prompt.id, "pointwise", score)

@@ -26,7 +26,8 @@ def generate(
     ttft_ms = None
     tokens = []
 
-    with requests.post(url, json={"model": model, "prompt": prompt, "stream": True}, stream=True) as resp:
+    payload = {"model": model, "prompt": prompt, "stream": True, "options": {"temperature": 0}}
+    with requests.post(url, json=payload, stream=True) as resp:
         resp.raise_for_status()
         for line in resp.iter_lines():
             if not line:
