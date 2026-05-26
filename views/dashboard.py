@@ -16,6 +16,14 @@ CATEGORY_DISPLAY = {
     "general_quality": "General Quality",
 }
 
+MODEL_COLORS = ["#6366F1", "#10B981", "#F59E0B"]
+CHART_LAYOUT = dict(
+    paper_bgcolor="rgba(0,0,0,0)",
+    plot_bgcolor="rgba(0,0,0,0)",
+    font=dict(family="sans-serif", size=13, color="#334155"),
+    margin=dict(t=40, b=40, l=40, r=20),
+)
+
 
 def _label(model: str) -> str:
     return MODEL_DISPLAY.get(model, model)
@@ -90,6 +98,22 @@ def show():
 
     model_metrics = _aggregate(run_id, conn)
     composite = compute_composite_scores(model_metrics)
+    sorted_models = sorted(composite.items(), key=lambda x: -x[1])
+
+    # --- Top metric cards ---
+    if sorted_models:
+        winner = sorted_models[0][0]
+        winner_score = sorted_models[0][1]
+        avg_bert = sum(v["bert_f1"] for v in model_metrics.values()) / len(model_metrics)
+        avg_judge = sum(v["judge_mean"] for v in model_metrics.values()) / len(model_metrics)
+        n_responses = len(get_responses_for_run(conn, run_id))
+
+        c1, c2, c3, c4 = st.columns(4)
+        c1.metric("🏆 Top Model", _label(winner), f"score {winner_score:.3f}")
+        c2.metric("📊 Avg BERTScore F1", f"{avg_bert:.3f}")
+        c3.metric("⚖️ Avg Judge Score", f"{avg_judge / 10:.3f}")
+        c4.metric("📝 Total Responses", n_responses)
+        st.markdown("---")
 
     # --- Leaderboard ---
     st.subheader("Leaderboard")
@@ -102,17 +126,18 @@ def show():
             "Judge Score": round(model_metrics[m]["judge_mean"] / 10.0, 4),
             "Speed (tok/s)": round(model_metrics[m]["tokens_per_second"], 2),
         }
-        for m, s in sorted(composite.items(), key=lambda x: -x[1])
+        for m, s in sorted_models
     ])
-    st.dataframe(lb_df, use_container_width=True)
+    st.dataframe(lb_df, use_container_width=True, hide_index=True)
+
+    st.markdown("---")
 
     # --- Radar chart ---
-    st.subheader("Overall Performance (Radar)")
-    metric_keys = ["bert_f1", "determinism", "tokens_per_second", "judge_mean", "judge_if_mean"]
+    st.subheader("Overall Performance")
     labels = ["BERTScore F1", "Determinism", "Speed", "Judge Score", "Instr. Following"]
     max_tps = max((v["tokens_per_second"] for v in model_metrics.values()), default=1.0) or 1.0
     fig_radar = go.Figure()
-    for model, vals in model_metrics.items():
+    for idx, (model, vals) in enumerate(model_metrics.items()):
         r_vals = [
             vals["bert_f1"],
             vals["determinism"],
@@ -121,10 +146,21 @@ def show():
             vals["judge_if_mean"] / 10.0,
         ]
         fig_radar.add_trace(go.Scatterpolar(
-            r=r_vals + [r_vals[0]], theta=labels + [labels[0]], fill="toself", name=_label(model)
+            r=r_vals + [r_vals[0]],
+            theta=labels + [labels[0]],
+            fill="toself",
+            name=_label(model),
+            line=dict(color=MODEL_COLORS[idx % len(MODEL_COLORS)]),
+            fillcolor=MODEL_COLORS[idx % len(MODEL_COLORS)].replace(")", ", 0.15)").replace("rgb", "rgba") if MODEL_COLORS[idx % len(MODEL_COLORS)].startswith("rgb") else MODEL_COLORS[idx % len(MODEL_COLORS)] + "26",
         ))
-    fig_radar.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 1])), showlegend=True)
+    fig_radar.update_layout(
+        polar=dict(radialaxis=dict(visible=True, range=[0, 1], gridcolor="#E2E8F0"), angularaxis=dict(gridcolor="#E2E8F0")),
+        showlegend=True,
+        **CHART_LAYOUT,
+    )
     st.plotly_chart(fig_radar, use_container_width=True)
+
+    st.markdown("---")
 
     # --- Category breakdown ---
     st.subheader("Category Breakdown")
@@ -145,16 +181,20 @@ def show():
         fig_cat_bert = px.bar(
             cat_df.dropna(subset=["BERTScore F1"]),
             x="Category", y="BERTScore F1", color="Model", barmode="group",
-            range_y=[0, 1],
+            range_y=[0, 1], color_discrete_sequence=MODEL_COLORS,
         )
+        fig_cat_bert.update_layout(**CHART_LAYOUT)
         st.plotly_chart(fig_cat_bert, use_container_width=True)
     with tab_judge:
         fig_cat_judge = px.bar(
             cat_df.dropna(subset=["Judge Score"]),
             x="Category", y="Judge Score", color="Model", barmode="group",
-            range_y=[0, 1],
+            range_y=[0, 1], color_discrete_sequence=MODEL_COLORS,
         )
+        fig_cat_judge.update_layout(**CHART_LAYOUT)
         st.plotly_chart(fig_cat_judge, use_container_width=True)
+
+    st.markdown("---")
 
     # --- Metric bar charts ---
     st.subheader("Metric Comparison")
@@ -166,7 +206,12 @@ def show():
     ]
     for col, (label, key, divisor) in zip(cols, bar_specs):
         df = pd.DataFrame([{"Model": _label(m), label: vals[key] / divisor} for m, vals in model_metrics.items()])
-        col.plotly_chart(px.bar(df, x="Model", y=label, title=label, range_y=[0, 1]), use_container_width=True)
+        fig = px.bar(df, x="Model", y=label, title=label, range_y=[0, 1], color="Model",
+                     color_discrete_sequence=MODEL_COLORS)
+        fig.update_layout(**CHART_LAYOUT, showlegend=False)
+        col.plotly_chart(fig, use_container_width=True)
+
+    st.markdown("---")
 
     # --- Raw responses viewer ---
     st.subheader("Raw Responses")
@@ -180,16 +225,17 @@ def show():
         all_prompts = {p.id: p for p in load_prompts(prompts_dir=PROMPTS_DIR)}
         prompt_obj = all_prompts.get(selected_prompt_id)
         if prompt_obj:
-            st.markdown(f"**Prompt:** {prompt_obj.prompt}")
+            st.info(f"**Prompt:** {prompt_obj.prompt}")
             with st.expander("Reference answer"):
                 st.write(prompt_obj.reference)
 
         if models_in_run:
             cols = st.columns(len(models_in_run))
-            for col, model in zip(cols, models_in_run):
+            for idx, (col, model) in enumerate(zip(cols, models_in_run)):
                 resp = next((r for r in prompt_responses if r["model"] == model), None)
                 with col:
-                    st.markdown(f"**{_label(model)}**")
+                    color = MODEL_COLORS[idx % len(MODEL_COLORS)]
+                    st.markdown(f"<p style='color:{color};font-weight:700;font-size:15px'>{_label(model)}</p>", unsafe_allow_html=True)
                     if resp:
                         st.text_area(
                             label="response",
@@ -202,10 +248,12 @@ def show():
                     else:
                         st.caption("No response recorded")
 
+    st.markdown("---")
+
     # --- Export ---
     st.subheader("Export")
     st.download_button(
-        "Download Responses CSV",
+        "⬇️ Download Responses CSV",
         pd.DataFrame(responses).to_csv(index=False),
         "responses.csv",
         "text/csv",
